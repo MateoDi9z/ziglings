@@ -1,4 +1,4 @@
-//
+// *
 // Oops! This program is supposed to print a line like our Hello World
 // example. But we forgot how to import the Zig Standard Library.
 //
@@ -11,7 +11,7 @@
 // Please complete the import below:
 //
 
-??? = @import("std");
+const std = @import("std");
 
 pub fn main() void {
     std.debug.print("Standard Library.\n", .{});

@@ -11,7 +11,7 @@
 //
 // is the same as
 //
-//     const foo = bar orelse unreachable;
+// !    const foo = bar orelse unreachable;
 //
 // See if you can find where we use this shortcut below.
 //
@@ -21,7 +21,7 @@ const std = @import("std");
 
 const Elephant = struct {
     letter: u8,
-    tail: *Elephant = null, // Hmm... tail needs something...
+    tail: ?*Elephant = null, // Hmm... tail needs something...
     visited: bool = false,
 };
 
@@ -42,15 +42,25 @@ pub fn main() void {
 // This function visits all elephants once, starting with the
 // first elephant and following the tails to the next elephant.
 fn visitElephants(first_elephant: *Elephant) void {
-    var e = first_elephant;
+    var e: *Elephant = first_elephant;
 
     while (!e.visited) {
         std.debug.print("Elephant {u}. ", .{e.letter});
         e.visited = true;
 
         // We should stop once we encounter a tail that
-        // does NOT point to another element. What can
+        // does NOT point    to another element. What can
         // we put here to make that happen?
-        e = e.tail ???
+        e = e.tail orelse break;
     }
 }
+
+// fn visitElephants(first_elephant: *Elephant) void {
+//     var e = first_elephant;
+
+//     while (!e.visited) {
+//         std.debug.print("Elephant {u}. ", .{e.letter});
+//         e.visited = true;
+//         e = e.tail;
+//     }
+// }
